@@ -1,0 +1,31 @@
+/* v20 mobile + observation UI */
+#obsHud20{display:none;position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:90;min-width:min(520px,92vw);max-width:92vw;padding:8px 9px 8px 13px;border:1px solid #d6ae5a;border-radius:8px;background:rgba(26,15,8,.88);box-shadow:0 8px 30px rgba(0,0,0,.55);backdrop-filter:blur(5px);align-items:center;justify-content:space-between;gap:12px;color:#f9e8c5}
+#obsHud20>div{min-width:0;display:flex;flex-direction:column;gap:2px}#obsText20{font-size:12px;opacity:.82;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#obsExit20{flex:0 0 auto}
+body.observe20 #obsHud20{display:flex}body.observe20 #top,body.observe20 #bar,body.observe20 #drawer,body.observe20 #info,body.observe20 #zoomUI,body.observe20 #placeBar{display:none!important}body.observe20 #stage{inset:0;height:100dvh}
+#mobileMoreBtn20,#mobileMorePanel20{display:none}
+@media(max-width:700px),(pointer:coarse){
+ html,body,#app{height:100dvh;max-height:100dvh;overscroll-behavior:none}
+ body.mobile20 #top{height:auto;min-height:42px;padding:4px 6px;gap:5px;overflow:hidden}
+ body.mobile20 #top>.sp{display:none}body.mobile20 #top>#sndBtn,body.mobile20 #top>#setBtn,body.mobile20 #top>#helpBtn,body.mobile20 #top>#obsBtn,body.mobile20 #top>#timeBtn{display:none}
+ body.mobile20 #top>.grp:not(#tabs){display:none}
+ body.mobile20 #tankTab17{min-width:0!important;max-width:48vw!important;padding:5px 7px}body.mobile20 #tankTab17 .tankName17{max-width:25vw!important}
+ body.mobile20 #clock{font-size:11px;padding:4px 6px;margin-left:auto}body.mobile20 #coins{font-size:11px;padding:4px 6px}
+ body.mobile20 #bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:5px max(5px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(5px,env(safe-area-inset-left));overflow:visible}
+ body.mobile20 #bar button{min-width:0;width:100%;min-height:44px;padding:5px 2px;font-size:11px;white-space:normal;line-height:1.05}
+ body.mobile20 #bar button[data-d="sub"],body.mobile20 #presetBtn15,body.mobile20 #journalBtn,body.mobile20 #mistBtn,body.mobile20 #cleanBtn,body.mobile20 #removeBtn{display:none}
+ body.mobile20 #mobileMoreBtn20{display:block}
+ body.mobile20 #drawer[style*="display: block"]{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;white-space:normal;max-height:38dvh;overflow-y:auto;overflow-x:hidden;padding:8px 7px calc(8px + env(safe-area-inset-bottom));scroll-snap-type:y proximity}
+ body.mobile20 #drawer .card{width:auto;margin:0;min-height:92px;scroll-snap-align:start;padding:5px 3px;font-size:10px}body.mobile20 #drawer .card canvas{width:62px;height:46px;max-width:100%}
+ body.mobile20 #drawerNav16{display:none!important}
+ body.mobile20 #mobileMorePanel20{display:block;position:fixed;left:6px;right:6px;bottom:calc(6px + env(safe-area-inset-bottom));z-index:85;padding:9px;border:1px solid #c29443;border-radius:10px;background:linear-gradient(rgba(55,33,18,.99),rgba(26,15,8,.99));box-shadow:0 12px 35px rgba(0,0,0,.7);transform:translateY(calc(100% + 30px));opacity:0;pointer-events:none;transition:transform .18s,opacity .18s}
+ body.mobile20 #mobileMorePanel20.open{transform:none;opacity:1;pointer-events:auto}
+ .mobileSheetHead20{display:flex;justify-content:space-between;align-items:center;padding:2px 2px 8px;color:#f0cf83}.mobileSheetHead20 button{width:38px;height:36px;padding:0}
+ .mobileGrid20{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.mobileGrid20 button{min-height:46px;padding:5px 2px;font-size:11px;line-height:1.05}
+ body.mobile20 #info{left:6px;right:6px;top:auto;bottom:calc(58px + env(safe-area-inset-bottom));width:auto;max-height:36dvh;border-radius:8px;padding:7px;font-size:11px}
+ body.mobile20 #info h3{font-size:15px}body.mobile20 #info .lat{font-size:10px}body.mobile20 #state{font-size:11px;margin:4px 0;padding:4px}
+ body.mobile20 #zoomUI{right:6px;top:6px;bottom:auto;gap:5px}body.mobile20 #zoomUI button{width:42px;height:42px}
+ body.mobile20 #placeBar{bottom:calc(58px + env(safe-area-inset-bottom));width:max-content;max-width:92vw}body.mobile20 #placeBar button{min-height:44px}
+ body.mobile20 .panel{width:96vw;max-height:88dvh;padding:10px}body.mobile20 #colgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.scard{min-width:0}
+ body.mobile20 #obsHud20{bottom:max(9px,env(safe-area-inset-bottom));min-width:94vw;font-size:12px}
+}
+@media(max-width:430px){body.mobile20 #drawer[style*="display: block"]{grid-template-columns:repeat(2,minmax(0,1fr))}.mobileGrid20{grid-template-columns:repeat(3,minmax(0,1fr))}body.mobile20 #tankTab17 .tankName17{max-width:20vw!important}}

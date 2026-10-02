@@ -28,7 +28,7 @@ function memSpot(e){return {surf:cloneSurf(e.surf),pt:vc(e.pos)};}
 function targetProfile(p){if(p&&p.kind==='spider'){return {one:p.name||'jumper',name:p.name||'jumper',food:Math.max(18,spSize(p)*1.7),value:0,walk:16+spSize(p)*0.9,sense:92,sens:1.15,reflex:0.75,flyer:false,wall:true,strong:true,struggle:4+spSize(p)*0.22,danger:0.9,smart:true,size:spSize(p)};}return p&&PREY[p.type];}
 function targetName(p){const q=targetProfile(p);return q?q.one:'target';}
 function targetSize(p){return p&&p.kind==='spider'?spSize(p):(p?p.size:0);}
-function targetValid(t,s,p){if(!p||p===s)return false;if(p.kind==='spider')return t.spiders.includes(p)&&!p._gone&&!p.owner;return t.prey.includes(p)&&!p.dead&&!p.owner&&!p.buried;}
+function targetValid(t,s,p){if(!p||p===s)return false;if(p.kind==='spider')return t.spiders.includes(p)&&!p._gone&&!p.owner;return t.prey.includes(p)&&!p.dead&&!p.owner&&!p.buried&&PREY[p.type]?.huntable!==false;}
 function spiderPower(s){return (s.stage||1)*100+spSize(s)*6+(s.softT>0?-40:0);}
 function stronger(a,b){return spiderPower(a)>spiderPower(b)+0.001;}
 function addSilk(t,a,b,kind='drag',alpha=0.24){if(!t.silk)t.silk=[];if(vdist(a,b)<2)return;t.silk.push({a:vc(a),b:vc(b),kind,alpha,age:0});if(t.silk.length>140)t.silk.splice(0,t.silk.length-140);recordJournal('silk');}

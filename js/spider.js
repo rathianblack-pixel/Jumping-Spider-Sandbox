@@ -5,7 +5,7 @@ function newSpider(spid,t){const S=SPEC[spid];const j=()=>rr(-0.08,0.08);
  return s;}
 // ---------- spider ----------
 function scanPrey(t,s){let best=null,bs=-1;const sz=spSize(s);const sight=90+sz*3.5;const eye=eyePos(s);
- for(const p of t.prey){if(p.dead||p.owner||p.buried)continue;if((s.ignore[p.id]||0)>G.clock)continue;const d=vdist(eye,p.pos);if(d>sight)continue;if(!LOS(t,eye,p.pos))continue;
+ for(const p of t.prey){if(p.dead||p.owner||p.buried||PREY[p.type]?.huntable===false)continue;if((s.ignore[p.id]||0)>G.clock)continue;const d=vdist(eye,p.pos);if(d>sight)continue;if(!LOS(t,eye,p.pos))continue;
   const ang=angleTo(s,p.pos);const moving=p.spd>2;let pr=moving?1.6:0.5;if(ang>1.1)pr*=moving?0.55:0.08;if(ang>2.3)pr*=moving?0.35:0;
   if(inCover(t,p.pos.x,p.pos.z,p.pos.y)&&!moving)pr*=0.3;if(p.surf.t==='air')pr*=0.35;pr*=(1-d/sight)*1.4+0.25;
   if(rand()<pr*0.3){const sc=PREY[p.type].food/(d+15);if(sc>bs){bs=sc;best=p;}}}

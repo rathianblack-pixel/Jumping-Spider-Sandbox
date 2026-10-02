@@ -7,6 +7,10 @@ const PREY={
  mealworm:{one:'mealworm',name:'Mealworms',pack:3,price:6,size:16,food:22,value:7,walk:3.5,sense:16,sens:.5,reflex:0,burrow:true,struggle:2.6},
  roach:{one:'dubia nymph',name:'Dubia Nymphs',pack:2,price:6,size:8,food:16,value:8,walk:11,sense:30,sens:.7,reflex:.25,hide:true,struggle:2.2},
  sjumper:{one:'tiny jumper',name:'Tiny Jumper',pack:1,price:12,size:4.5,food:14,value:15,walk:20,hop:120,sense:65,sens:1.2,reflex:.6,danger:.3,smart:true,wall:true,struggle:2.8},
+ springtail:{one:'springtail',name:'Springtail Colony',pack:12,price:5,size:1.35,food:0,value:0,walk:10,sense:16,sens:.35,reflex:.8,cleanup:true,huntable:false,moisture:true,struggle:.2},
+ isopod:{one:'dwarf isopod',name:'Dwarf Isopods',pack:4,price:8,size:6.8,food:7,value:3,walk:6.5,sense:23,sens:.5,reflex:.16,hide:true,cleanup:true,moisture:true,strong:true,struggle:1.6},
+ waxworm:{one:'waxworm',name:'Waxworms',pack:2,price:8,size:14,food:24,value:8,walk:3.8,sense:15,sens:.4,reflex:.05,burrow:true,struggle:2.5},
+ beetle:{one:'darkling beetle',name:'Darkling Beetles',pack:2,price:9,size:7.2,food:11,value:5,walk:9.5,sense:31,sens:.65,reflex:.28,hide:true,strong:true,struggle:2.3},
 };
 function newPrey(type,t,pos){const P_=PREY[type];const p={kind:'prey',id:UID++,type,pos:pos?vc(pos):randFloorPt(t),surf:S_FLOOR,face:vnorm(v3(rr(-1,1),0,rr(-1,1))),state:'idle',st:0,route:null,jump:null,alert:0,vel:v3(),anim:rand()*10,moved:0,spd:0,dead:false,feed:0,owner:null,buried:false,seed:(rand()*1e9)|0,fl:null,size:P_.size*rr(0.85,1.15)};
  if(pos&&pos.y>0){p.surf={t:'air'};p.vel=v3(0,-20,0);p.state=P_.flyer?'fly':'drop';if(P_.flyer)p.fl=flyTarget(t,p,null);}
