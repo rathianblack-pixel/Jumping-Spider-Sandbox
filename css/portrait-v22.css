@@ -1,0 +1,43 @@
+/* v22 portrait-first mobile layout */
+#mobileDock22,#mobileSheet22,#mobileMore22{display:none}
+@media(max-width:700px) and (orientation:portrait){
+ html,body,#app{height:100dvh;max-height:100dvh;overflow:hidden;overscroll-behavior:none}
+ body.portrait22 #app{padding-top:env(safe-area-inset-top);padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+ body.portrait22 #top{height:46px;min-height:46px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px;padding:4px 7px;border-bottom-width:1px;overflow:visible}
+ body.portrait22 #coins{grid-column:1;font-size:12px;padding:5px 7px}
+ body.portrait22 #tabs{grid-column:2;min-width:0}
+ body.portrait22 #tankTab17{width:100%;min-width:0!important;max-width:none!important;justify-content:center;padding:6px 7px;font-size:12px}
+ body.portrait22 #tankTab17 .tankName17{max-width:34vw!important}
+ body.portrait22 #clock{grid-column:3;margin:0;font-size:11px;padding:5px 6px}
+ body.portrait22 #top>.sp,body.portrait22 #top>.grp:not(#tabs),body.portrait22 #top>#obsBtn,body.portrait22 #top>#timeBtn,body.portrait22 #top>#sndBtn,body.portrait22 #top>#setBtn,body.portrait22 #top>#helpBtn{display:none!important}
+ body.portrait22 #stage{position:relative;flex:1;min-height:0;width:100%;padding:0!important;overflow:hidden;align-items:initial;justify-content:initial;background:radial-gradient(ellipse at 50% 48%,#2a1a0f,#0c0704 76%)}
+ body.portrait22 #cv,body.portrait22 #ov{max-width:none!important;max-height:none!important;position:absolute!important;transform:none!important}
+ body.portrait22 #bar{display:none!important}
+ body.portrait22 #mobileMoreBtn20,body.portrait22 #mobileMorePanel20{display:none!important}
+ body.portrait22 #mobileDock22{display:grid;flex:0 0 auto;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;height:64px;padding:5px 6px max(6px,env(safe-area-inset-bottom));background:linear-gradient(#4a2d18,#2b190d);border-top:1px solid #b8893a;box-shadow:0 -5px 18px rgba(0,0,0,.45);z-index:45}
+ body.portrait22 #mobileDock22 button{min-width:0;min-height:50px;padding:4px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:18px;line-height:1;border-radius:7px}
+ body.portrait22 #mobileDock22 button span{font-size:10px;line-height:1.05}
+ body.portrait22 #mobileSheet22,body.portrait22 #mobileMore22{display:block;position:fixed;left:max(6px,env(safe-area-inset-left));right:max(6px,env(safe-area-inset-right));bottom:calc(64px + env(safe-area-inset-bottom));z-index:80;background:linear-gradient(rgba(61,38,20,.985),rgba(27,16,8,.995));border:1px solid #c29443;border-radius:14px 14px 8px 8px;box-shadow:0 -12px 36px rgba(0,0,0,.64);backdrop-filter:blur(8px);transform:translateY(calc(100% + 90px));opacity:0;pointer-events:none;transition:transform .2s ease,opacity .2s ease;max-height:58dvh;overflow:hidden}
+ body.portrait22 #mobileSheet22.open,body.portrait22 #mobileMore22.open{transform:none;opacity:1;pointer-events:auto}
+ .sheetHandle22{width:42px;height:4px;border-radius:3px;background:rgba(238,209,155,.45);margin:7px auto 3px}.sheetHead22{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 9px;color:#f2d28c}.sheetHead22 button{width:38px;height:34px;padding:0;font-size:22px}
+ body.portrait22 #buildTabs22{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:0 7px 7px}body.portrait22 #buildTabs22 button{min-width:0;padding:7px 2px;font-size:11px}body.portrait22 #buildTabs22 button.on{background:linear-gradient(#d5aa52,#946423);color:#241407}
+ body.portrait22 #sheetBody22{overflow:hidden}
+ body.portrait22 #drawer{position:static!important;display:none;background:transparent;border:0;padding:7px;white-space:normal;max-height:44dvh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+ body.portrait22 #mobileSheet22.open #drawer[style*="display: block"]{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ body.portrait22 #drawer .card{width:auto!important;margin:0!important;min-height:108px;padding:6px 4px;font-size:11px;border-radius:8px}body.portrait22 #drawer .card canvas{width:76px;height:58px;max-width:100%}body.portrait22 #drawerNav16{display:none!important}body.portrait22 #drawer:before,body.portrait22 #drawer:after{content:none!important;display:none!important}
+ body.portrait22 .moreGrid22{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:6px 8px 10px;max-height:49dvh;overflow:auto}.moreGrid22 button{min-width:0;min-height:58px;padding:6px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:18px}.moreGrid22 button span{font-size:10px}
+ body.portrait22 #info{left:7px;right:7px;top:auto;bottom:8px;width:auto;max-height:32dvh;padding:7px 9px;border-radius:10px;font-size:11px;z-index:12;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+ body.portrait22 #info h3{font-size:15px;margin-right:28px}body.portrait22 #info .lat{font-size:10px}body.portrait22 #info:not(.portraitExpanded22){max-width:calc(100% - 14px)}body.portrait22 #info.portraitExpanded22{max-height:46dvh;overflow:auto}
+ body.portrait22 #zoomUI{top:8px;right:7px;bottom:auto;gap:5px;z-index:14}body.portrait22 #zoomUI button{width:40px;height:40px;min-height:40px;background:rgba(67,41,21,.87)}
+ body.portrait22 #placeBar{bottom:10px;max-width:90vw;z-index:20}body.portrait22 #placeBar button{min-height:44px}
+ body.portrait22 #toasts{bottom:76px;left:7px;right:7px;align-items:flex-start}body.portrait22 .toast{font-size:11px;max-width:92vw}
+ body.portrait22 #hint{top:7px;max-width:82vw;font-size:11px}
+ body.portrait22 #tankPicker17{position:fixed!important;left:7px!important;right:7px!important;top:54px!important;width:auto!important;max-height:62dvh!important;border-radius:10px}
+ body.portrait22 .modal{align-items:flex-end;padding:0}body.portrait22 .panel{width:100vw;max-width:none!important;max-height:88dvh;border-radius:14px 14px 0 0;padding:12px 10px calc(12px + env(safe-area-inset-bottom));border-left:0;border-right:0;border-bottom:0}
+ body.portrait22 #colgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}body.portrait22 .scard canvas{width:104px;height:78px}
+ body.portrait22 #coldet{display:grid;grid-template-columns:140px minmax(0,1fr);gap:9px}body.portrait22 #coldet canvas{width:140px;height:105px}
+ body.portrait22 #title{padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom);gap:10px}body.portrait22 #title canvas{width:170px;height:128px}body.portrait22 #title h1{font-size:28px;letter-spacing:3px}body.portrait22 #title p{font-size:13px;max-width:330px;margin:4px 0}
+ body.portrait22.observe20 #mobileDock22,body.portrait22.observe20 #mobileSheet22,body.portrait22.observe20 #mobileMore22{display:none!important}
+ body.portrait22 #obsHud20{bottom:max(10px,env(safe-area-inset-bottom));min-width:94vw}
+}
+@media(max-width:380px) and (orientation:portrait){body.portrait22 #mobileSheet22.open #drawer[style*="display: block"]{grid-template-columns:repeat(2,minmax(0,1fr))}body.portrait22 #drawer .card canvas{width:66px;height:50px}.moreGrid22{grid-template-columns:repeat(3,minmax(0,1fr))}.sheetHead22{font-size:13px}}

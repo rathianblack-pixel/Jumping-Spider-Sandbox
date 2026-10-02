@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<title>Jumper Terrarium</title>
+<title>Jumper Terrarium v22</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/mobile-v20.css">
+  <link rel="stylesheet" href="css/portrait-v22.css">
 </head><body>
 <div id="app">
  <div id="top">
@@ -39,7 +40,7 @@
 <p><b>Live Food</b> – pick prey and click in the tank to drop it in. Springtails act as cleanup fauna rather than hunting targets; dwarf isopods, waxworms and darkling beetles add different movement and hiding behavior. Flowers attract flies & moths. Moths love the night.</p>
 <p><b>Jumpers</b> – unlock species with coins and place them. Click a jumper to see what it is thinking. Individuals develop different habits, memories and personalities; species also have stronger identities such as wall-running, canopy hunting, display behavior or tactical ambushing. Age and molt history now affect life stage and movement.</p>
 <p>Jumpers spot prey, plan routes, close distance quickly when prey is far, slow into a careful creep near striking range, freeze when watched from farther away, and commit to a pounce if prey gets too close. Jump reach varies by jumper. Other jumpers can notice, threaten, flee, or become prey themselves; larger and more mature jumpers dominate cannibalistic encounters.</p>
-<p><b>Cameras</b> – keys <b>1</b> isometric, <b>2</b> Observer, <b>3</b> Follow, <b>4</b> Reverse. <b>Observation Mode</b> (📹 or O) hides the management UI and follows interesting behavior automatically. <b>Zoom</b> with the mouse wheel, pinch, or the +/− buttons; drag to pan when zoomed in. On phones, the primary actions stay along the bottom and <b>More</b> opens the remaining controls. <b>Mist</b> makes droplets they drink. Progress saves automatically.</p>
+<p><b>Cameras</b> – keys <b>1</b> isometric, <b>2</b> Observer, <b>3</b> Follow, <b>4</b> Reverse. <b>Observation Mode</b> (📹 or O) hides the management UI and follows interesting behavior automatically. <b>Zoom</b> with the mouse wheel, pinch, or the +/− buttons; drag to pan when zoomed in. In portrait on phones, every enclosure switches to a taller portrait habitat layout. The thumb dock keeps <b>Build, Food, Jumpers, Observe</b> and <b>More</b> within reach; Build/Food open touch-friendly bottom sheets while More contains cameras and maintenance controls. <b>Mist</b> makes droplets they drink. Progress saves automatically.</p>
 <button onclick="closeModal('helpModal')">Got it</button></div></div>
 
 <div class="modal" id="journalModal"><div class="panel" style="max-width:720px"><div style="display:flex;justify-content:space-between;align-items:center"><h2>📓 Field Journal</h2><button onclick="closeModal('journalModal')">Close</button></div><p style="margin-top:0;color:#6a4a2a">Behaviors are recorded when you actually witness them. Individual jumper traits reveal themselves gradually through observation.</p><div id="journalBody"></div></div></div>
@@ -80,5 +81,6 @@
 <script src="js/depth-v20.js"></script>
 <script src="js/observation-v20.js"></script>
 <script src="js/mobile-v20.js"></script>
+<script src="js/portrait-v22.js"></script>
 <script src="js/boot.js"></script>
 </body></html>

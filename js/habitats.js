@@ -160,6 +160,6 @@ if(!load())initNew();for(const t of G.tanks)if(t.owned)withTankDims(t,()=>ensure
 setCam(1);resize();renderTabs();
 // title art
 (()=>{const c=$('titleCv'),x=c.getContext('2d');const pb=new PB(512,384);B=pb;drawJumper({x:256,y:336,u:30,view:'front',pal:SPEC.audax.pal,pat:'audax',seed:5,as:1,raise:0.6});x.putImageData(new ImageData(new Uint8ClampedArray(pb.d.buffer),512,384),0,0);})();
-$('startBtn').onclick=()=>{$('title').style.display='none';audioInit();if(SND.ctx&&SND.ctx.state==='suspended')SND.ctx.resume();resize();if(TOUCH&&innerHeight>innerWidth)toast('📱 Tip: turn your device sideways for a bigger tank view');if(!localStorage.getItem('jtHelp')){localStorage.setItem('jtHelp',1);$('helpModal').style.display='flex';}};
+$('startBtn').onclick=()=>{$('title').style.display='none';audioInit();if(SND.ctx&&SND.ctx.state==='suspended')SND.ctx.resume();resize();if(TOUCH&&innerHeight>innerWidth)toast('📱 Portrait habitat mode • use the bottom dock for Build, Food, Jumpers and More');if(!localStorage.getItem('jtHelp')){localStorage.setItem('jtHelp',1);$('helpModal').style.display='flex';}};
 window.addEventListener('beforeunload',save);window.addEventListener('pagehide',()=>{if(SDFP)localStorage.removeItem('jtSdfBusy');});
 
