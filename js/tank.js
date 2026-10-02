@@ -49,7 +49,9 @@ function route(t,e,toS,toP,hopRange=0){const segs=[];const from=e.surf;let p=vc(
  if(sameSurf(from,toS)){if(from.t==='floor')floorRoute(t,p,toP,segs);else segs.push({surf:toS,pt:toP});return segs;}
  if(hopRange>0&&from.t!=='floor'&&vdist(p,toP)<hopRange&&toS.t!=='floor'){segs.push({surf:toS,pt:toP,hop:true});return segs;}
  if(from.t==='plat'){const d=platById(t,from.id);if(d){const ep=edgePt(d,toP,1.2);segs.push({surf:from,pt:ep.top});segs.push({surf:{t:'climb',id:d.id},pt:v3(ep.side.x,0,ep.side.z),climb:true});p=ep.fl;segs.push({surf:S_FLOOR,pt:ep.fl});}}
- else if(from.t==='wall'){const b=wallClamp(from.w,p);b.y=0;segs.push({surf:from,pt:b});p=wallBase(from.w,p);segs.push({surf:S_FLOOR,pt:p});}
+ else if(from.t==='wall'){// Leave glass toward the destination's projected lateral position instead of dropping straight down first.
+  // This lets stalking spiders descend diagonally with moving prey rather than rotate/down/rotate/down.
+  const b=wallClamp(from.w,toP);b.y=0;segs.push({surf:from,pt:b,wallExit:true});p=wallBase(from.w,b);segs.push({surf:S_FLOOR,pt:p});}
  if(toS.t==='plat'){const d=platById(t,toS.id);if(d){const ep=edgePt(d,p,1.2);floorRoute(t,p,ep.fl,segs);segs.push({surf:{t:'climb',id:d.id},pt:v3(ep.side.x,d.h,ep.side.z),climb:true});}}
  else if(toS.t==='wall'){const b=wallBase(toS.w,toP);floorRoute(t,p,b,segs);const wb=wallClamp(toS.w,toP);wb.y=0;segs.push({surf:toS,pt:wb});}
  else if(toS.t==='floor'){floorRoute(t,p,toP,segs);return segs;}
@@ -59,6 +61,9 @@ function LOS(t,a,b){for(const d of plats(t)){for(let i=1;i<12;i++){const f=i/12;
 function faceToward(e,target,rate,dt){let d=vsub(target,e.pos);if(e.surf.t==='floor'||e.surf.t==='plat'||e.surf.t==='perch'){d.y=0;}else if(e.surf.t==='wall'){const n=wallNormal(e.surf.w);const k=vdot(d,n);d=vsub(d,vmul(n,k));}
  if(vlen(d)<0.01)return;d=vnorm(d);const f=e.face;const nf=vnorm(v3(lerp(f.x,d.x,clamp(rate*dt,0,1)),lerp(f.y,d.y,clamp(rate*dt,0,1)),lerp(f.z,d.z,clamp(rate*dt,0,1))));if(vlen(nf)>0.01)e.face=nf;}
 function turnFaceFlat(e,d,rate,dt){d=v3(d.x,0,d.z);if(vlen(d)<0.01)return;d=vnorm(d);const a=Math.atan2(e.face.z,e.face.x),b=Math.atan2(d.z,d.x);let da=(b-a+Math.PI*3)%(Math.PI*2)-Math.PI;const na=a+da*clamp(rate*dt,0,1);e.face=v3(Math.cos(na),0,Math.sin(na));}
+function wallPlaneDir(w,v){const n=wallNormal(w),q=vsub(v,vmul(n,vdot(v,n)));return vlen(q)>.001?vnorm(q):null;}
+function turnFaceWall(e,d,rate,dt,dead=0.035){if(!e.surf||e.surf.t!=='wall')return;const w=e.surf.w,n=wallNormal(w),want=wallPlaneDir(w,d);if(!want)return;let cur=wallPlaneDir(w,e.face);if(!cur)cur=want;const up=v3(0,1,0),lat=(w==='z0'||w==='zD')?v3(1,0,0):v3(0,0,1);const a=Math.atan2(vdot(cur,up),vdot(cur,lat)),b=Math.atan2(vdot(want,up),vdot(want,lat));let da=(b-a+Math.PI*3)%(Math.PI*2)-Math.PI;if(Math.abs(da)<dead)return;const na=a+da*clamp(rate*dt,0,1);e.face=vnorm(vadd(vmul(lat,Math.cos(na)),vmul(up,Math.sin(na))));}
+function preyRearFactor(p,s){if(!p||!s||(p.kind!=='spider'&&p.type==='mealworm'))return 0;let f=vc(p.face||v3(1,0,0)),to=vsub(s.pos,p.pos);if(p.surf&&p.surf.t==='wall'){const n=wallNormal(p.surf.w);f=vsub(f,vmul(n,vdot(f,n)));to=vsub(to,vmul(n,vdot(to,n)));}else{f.y=0;to.y=0;}if(vlen(f)<.01||vlen(to)<.01)return 0;const rear=-vdot(vnorm(f),vnorm(to));let x=clamp((rear-.08)/.82,0,1);return x*x*(3-2*x);}
 function angleTo(e,target){let d=vsub(target,e.pos);d.y=e.surf.t==='wall'?d.y:0;const l=vlen(d)||1;return Math.acos(clamp(vdot(e.face,vmul(d,1/l)),-1,1));}
 // follow route; returns true when finished
 function followRoute(t,e,spd,dt,lockFace){if(!e.route||!e.route.length)return true;const seg=e.route[0];
@@ -81,6 +86,6 @@ const spSize=s=>SPEC[s.sp].size*(0.4+0.1*s.stage);
 const jumpRange=s=>{const z=spSize(s),q=clamp((s.tr&&s.tr.jump!=null?s.tr.jump:SPEC[s.sp].st.jump),0.1,1);return (13+z*2.3)*(0.78+q*0.72);};
 // Head-on prey inside this distance is too close for a passive freeze: commit to the jump instead.
 const pounceCommitRange=s=>jumpRange(s)*(0.54+clamp((s.tr&&s.tr.jump)||0.5,0.1,1)*0.12);
-function stalkingSpeed(s,p,walk,d){const P_=targetProfile(p),R=jumpRange(s),z=spSize(s);const dn=clamp((d-R*.68)/Math.max(1,R*2.45),0,1),ease=dn*dn*(3-2*dn);const rel=clamp((p.spd||0)/Math.max(1,P_.walk||8),0,2),motion=1-Math.exp(-rel*1.05);const careful=2.0+z*.10,far=walk*(.70+.16*motion);let v=lerp(careful,far,ease);v*=1.10-s.tr.stealth*.18;return Math.min(walk*.90,Math.max(1.8,v));}
+function stalkingSpeed(s,p,walk,d){const P_=targetProfile(p),R=jumpRange(s),z=spSize(s);const dn=clamp((d-R*.68)/Math.max(1,R*2.45),0,1),ease=dn*dn*(3-2*dn);const rel=clamp((p.spd||0)/Math.max(1,P_.walk||8),0,2),motion=1-Math.exp(-rel*1.05),rear=preyRearFactor(p,s);const careful=2.0+z*.10,far=walk*(.70+.16*motion);let v=lerp(careful,far,ease);v*=1.10-s.tr.stealth*.18;v*=1+rear*(.18+.30*ease);const cap=walk*(.90+.08*rear);return Math.min(cap,Math.max(1.8,v));}
 const eyePos=s=>v3(s.pos.x,s.pos.y+spSize(s)*0.3,s.pos.z);
 function setSt(e,st,mood){e.state=st;e.st=0;if(mood!==undefined)e.mood=mood;}
