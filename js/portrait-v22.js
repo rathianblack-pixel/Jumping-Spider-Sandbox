@@ -1,7 +1,9 @@
 // ================= v22 portrait-first mobile revamp =================
 (function(){
 'use strict';
-const JT22={ver:22,portrait:false,canonical:false,initialized:false};
+const JT22={ver:23,portrait:false,canonical:false,initialized:false};
+const BASE_START_PLACE22=startPlace;
+const BASE_TAP_AT22=tapAt;
 const BASE_TANK_TYPE22=tankType;
 const BASE_SET_DIMS22=setTankDims;
 const BASE_SAVE22=save;
@@ -63,7 +65,7 @@ initNew=function(){JT22.canonical=true;try{BASE_INIT22();}finally{JT22.canonical
 
 function canonPoint22(t,p){if(!p)return p;const cur=dims22(t,!!t._portrait22),base=dims22(t,false),rx=base.w/cur.w,rz=base.d/cur.d,ry=base.h/cur.h;return {x:p.x*rx,y:(p.y||0)*ry,z:p.z*rz};}
 function canonHusk22(t,h){if(!h||!h.pos)return h;const o=Object.assign({},h);o.pos=canonPoint22(t,h.pos);return o;}
-save=function(){try{const data={v:22,coins:G.coins,clock:G.clock,catches:G.catches,unlocked:G.unlocked,cur:G.cur,journal:G.journal||{},customPresets:G.customPresets||[],tanks:G.tanks.map(t=>{const curD=dims22(t,!!t._portrait22),baseD=dims22(t,false),rx=baseD.w/curD.w,rz=baseD.d/curD.d;return {name:t.name,tankType:t.tankType,owned:t.owned,sub:t.sub,humidity:t.humidity,age:t.age,presetRoll:t.presetRoll||0,lastPreset:t.lastPreset||null,decor:t.decor.map(d=>[d.type,d.x*rx,d.z*rz,d.rot,d.seed]),silk:(t.silk||[]).slice(-80).map(l=>({a:canonPoint22(t,l.a),b:canonPoint22(t,l.b),kind:l.kind,alpha:l.alpha,age:l.age})),spiders:t.spiders.filter(s=>!s.owner).map(s=>({sp:s.sp,name:s.name,stage:s.stage,meals:s.meals,sat:s.sat,thirst:s.thirst,tr:s.tr,persona:s.persona,mem:s.mem,catches:s.catches,seed:s.seed,obsPts:s.obsPts,softT:s.softT,life:s.life||null,huntMemory:s.huntMemory||null})),prey:t.prey.filter(p=>!p.owner).map(p=>p.type),husks:(t.husks||[]).slice(-40).map(h=>canonHusk22(t,h))};})};localStorage.setItem('jumperTerrarium1',JSON.stringify(data));}catch(e){console.warn('save22',e);}};
+save=function(){try{const data={v:23,coins:G.coins,clock:G.clock,catches:G.catches,unlocked:G.unlocked,cur:G.cur,journal:G.journal||{},customPresets:G.customPresets||[],tanks:G.tanks.map(t=>{const curD=dims22(t,!!t._portrait22),baseD=dims22(t,false),rx=baseD.w/curD.w,rz=baseD.d/curD.d;return {name:t.name,tankType:t.tankType,owned:t.owned,sub:t.sub,humidity:t.humidity,age:t.age,presetRoll:t.presetRoll||0,lastPreset:t.lastPreset||null,decor:t.decor.map(d=>[d.type,d.x*rx,d.z*rz,d.rot,d.seed]),silk:(t.silk||[]).slice(-80).map(l=>({a:canonPoint22(t,l.a),b:canonPoint22(t,l.b),kind:l.kind,alpha:l.alpha,age:l.age})),spiders:t.spiders.filter(s=>!s.owner).map(s=>({sp:s.sp,name:s.name,stage:s.stage,meals:s.meals,sat:s.sat,thirst:s.thirst,tr:s.tr,persona:s.persona,mem:s.mem,catches:s.catches,seed:s.seed,obsPts:s.obsPts,softT:s.softT,life:s.life||null,huntMemory:s.huntMemory||null})),prey:t.prey.filter(p=>!p.owner).map(p=>p.type),husks:(t.husks||[]).slice(-40).map(h=>canonHusk22(t,h))};})};localStorage.setItem('jumperTerrarium1',JSON.stringify(data));}catch(e){console.warn('save22',e);}};
 
 // Enclosure replacement/buying still uses the v15 canonical geometry internally.
 changeTankType15=function(t,id){const was=!!t?._portrait22;if(was)remapTank22(t,false);const before=t?.tankType;let r;try{r=BASE_CHANGE_TANK22(t,id);}finally{if(was&&t?.owned)remapTank22(t,true);if(G.tanks?.[G.cur]){setTankDims(G.tanks[G.cur]);setCam(cam.mode||1);resize();}}return r;};
@@ -93,6 +95,38 @@ function attachDrawer22(){ensureUI22();const dr=$('drawer');if(JT22.portrait){$(
 function setSheetFor22(kind){if(!JT22.portrait)return;ensureUI22();const build=['decor','plants','sub','presets'].includes(kind);$('buildTabs22').style.display=build?'grid':'none';$('sheetTitle22').textContent=build?'Build':kind==='prey'?'Live Food':'Inventory';for(const b of document.querySelectorAll('#buildTabs22 button'))b.classList.toggle('on',b.dataset.kind===kind);sheet22.classList.add('open');}
 openDrawer=function(kind){const r=BASE_OPEN_DRAWER22(kind);if(JT22.portrait&&UI.drawer){attachDrawer22();setSheetFor22(UI.drawer);}return r;};
 closeDrawer=function(){const r=BASE_CLOSE_DRAWER22();if(sheet22)sheet22.classList.remove('open');return r;};
+
+// v23: choosing a placeable item in portrait immediately gives the terrarium
+// back to the player. Keeping the inventory sheet over the lower half of a
+// tall tank hid the usable floor and made otherwise-valid placement taps map
+// outside the enclosure.
+startPlace=function(pl){
+ const r=BASE_START_PLACE22(pl);
+ if(JT22.portrait&&pl){
+  if(sheet22)sheet22.classList.remove('open');
+  if(more22)more22.classList.remove('open');
+  document.body.classList.add('placing23');
+  if(pl.kind==='prey')hint(`Tap in the tank to release ${PREY[pl.id].name}`);
+  else hint(`Tap in the tank to place ${DECOR[pl.id].name} • drag to aim`);
+  requestAnimationFrame(()=>{try{resize();}catch(_){}});
+ }
+ return r;
+};
+const BASE_CANCEL_PLACE22=cancelPlace;
+cancelPlace=function(){const r=BASE_CANCEL_PLACE22();document.body.classList.remove('placing23');return r;};
+
+// Slightly forgiving touch placement for portrait. The regular inverse-floor
+// projection is kept, but points just beyond an edge due to perspective/crop
+// rounding are clamped back into the enclosure instead of being discarded.
+tapAt=function(s){
+ if(!(JT22.portrait&&UI.place))return BASE_TAP_AT22(s);
+ const t=cur();let m=invFloor(s[0],s[1],0);
+ const pad=Math.max(5,Math.min(TW,TD)*.08);
+ const near=m.x>=-pad&&m.x<=TW+pad&&m.z>=-pad&&m.z<=TD+pad;
+ if(!near)return;
+ m=v3(clamp(m.x,1.5,TW-1.5),0,clamp(m.z,1.5,TD-1.5));
+ doPlace(t,m);
+};
 
 function applyPortraitUI22(){ensureUI22();const active=portraitWanted22();document.body.classList.toggle('portrait22',active);JT22.portrait=active;attachDrawer22();const info=$('info');if(active){infoExpanded22=false;info.classList.add('mini');info.classList.remove('portraitExpanded22');}else{info.classList.remove('portraitExpanded22');}document.querySelector('#mobileMorePanel20')?.classList.remove('open');syncGeometry22(true);resize();}
 

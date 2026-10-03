@@ -41,3 +41,11 @@
  body.portrait22 #obsHud20{bottom:max(10px,env(safe-area-inset-bottom));min-width:94vw}
 }
 @media(max-width:380px) and (orientation:portrait){body.portrait22 #mobileSheet22.open #drawer[style*="display: block"]{grid-template-columns:repeat(2,minmax(0,1fr))}body.portrait22 #drawer .card canvas{width:66px;height:50px}.moreGrid22{grid-template-columns:repeat(3,minmax(0,1fr))}.sheetHead22{font-size:13px}}
+
+/* v23 portrait placement interaction fixes */
+@media(max-width:700px) and (orientation:portrait){
+ body.portrait22.placing23 #info{display:none!important}
+ body.portrait22.placing23 #hint{z-index:95}
+ body.portrait22 .modal{z-index:140}
+ body.portrait22 .modal .panel{position:relative;z-index:141}
+}
