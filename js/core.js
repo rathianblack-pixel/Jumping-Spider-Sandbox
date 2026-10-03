@@ -2,7 +2,17 @@
 // Jumper Terrarium v11 adaptive stalking + close-range commitment + variable jump reach patch.
 // Builds on v8 stability safeguards. Held prey now uses a true fang/mouth anchor in every camera,
 // with prey-specific grip geometry so insects, mealworms, tiny jumpers and cannibal victims stay attached.
-const QUAL=+(localStorage.getItem('jtQ')||(()=>{try{const co=matchMedia('(pointer:coarse)').matches,m=Math.min(screen.width,screen.height);return co?1:2;}catch(e){return 2;}})()), RS=QUAL>=3?2:QUAL>=2?1.5:1, ICS=2;
+const QUAL=(()=>{
+  try{
+    const saved=+(localStorage.getItem('jtQ')||0)||0;
+    const coarse=matchMedia('(pointer:coarse)').matches;
+    const portrait=matchMedia('(orientation: portrait)').matches || innerHeight>innerWidth;
+    const auto=coarse?(portrait?3:2):2;
+    return Math.max(saved,auto);
+  }catch(e){
+    return 2;
+  }
+})(), RS=QUAL>=3?2:QUAL>=2?1.5:1, ICS=2;
 const W=Math.round(640*RS),H=Math.round(360*RS), SUB=8; let TW=200, TD=90, TH=100;
 class PB{constructor(w,h){this.w=Math.max(1,w|0);this.h=Math.max(1,h|0);this.d=new Uint32Array(this.w*this.h);}}
 let B=null;

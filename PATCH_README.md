@@ -1,12 +1,11 @@
-# Jumper Terrarium v22 → v23 portrait placement fix
+Jumper Terrarium v24 patch
 
-Replace these files in your existing v22 modular build:
-- `js/portrait-v22.js`
-- `css/portrait-v22.css`
+Changed file:
+- js/core.js
 
-Fixes:
-- Selecting Decor or Live Food in portrait automatically closes the inventory sheet while keeping the selected item active.
-- Portrait touch placement allows a small edge tolerance for perspective/crop rounding.
-- The selected-jumper info card hides during placement so it cannot intercept taps.
-- Mobile modals render above the thumb dock, including first-run Help.
-- Portrait placement hints now say to tap the tank directly.
+What changed:
+- Portrait/mobile now renders at a sharper internal resolution by default.
+- Coarse-pointer devices now use at least Medium quality.
+- Coarse-pointer portrait mode now uses High quality automatically for a much sharper tank view.
+
+Apply this over v23.
