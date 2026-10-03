@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<title>Jumper Terrarium v22</title>
+<title>Jumper Terrarium v28</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/mobile-v20.css">
   <link rel="stylesheet" href="css/portrait-v22.css">
@@ -35,9 +35,9 @@
  <label class="sl"><input type="checkbox" id="roomChk" checked> Room tone & nature</label>
  <button onclick="closeModal('sndModal')">Done</button></div></div>
 <div class="modal" id="helpModal"><div class="panel" style="max-width:620px;line-height:1.5"><h2>How to play</h2>
-<p><b>Habitats</b> – manage up to 8 enclosure slots. Different enclosure types have different dimensions, capacities, decor catalogs and layout presets. Use the Tank tab at the top to switch enclosures; choose Manage Habitats there to buy, rename or replace enclosures.</p>
+<p><b>Habitats</b> – every enclosure type is now an <b>open nature display</b>. Standard, Arboreal, Wide, Nano, Cube, Acrylic, Panoramic and Jar keep their own dimensions, capacities, decor catalogs and presets, but there is no visible or climbable glass. Invisible containment keeps animals inside; walking and climbing happen only on substrate, plants, branches, rocks and other real decor surfaces. Use the Tank tab at the top to switch enclosures; choose Manage Habitats there to buy, rename or replace enclosures.</p>
 <p><b>Decor / Plants / Substrate / Presets</b> – each enclosure has its own compatible decor catalog and adaptive layout presets. Pick an item and click inside the tank to place it. <b>R</b> rotates. <b>Esc</b> cancels. Save your own layouts from Presets and reuse them in compatible habitats. <b>Remove</b> can remove decor, prey, jumpers, remains, droplets or silk; decor refunds 50%.</p>
-<p><b>Live Food</b> – pick prey and click in the tank to drop it in. Springtails act as cleanup fauna rather than hunting targets; dwarf isopods, waxworms and darkling beetles add different movement and hiding behavior. Flowers attract flies & moths. Moths love the night.</p>
+<p><b>Live Food</b> – pick prey and click in the tank to drop it in. Prey now has explicit locomotion capabilities: non-climbers cannot stick to vertical decor, while flyers stay inside every habitat using soft invisible-boundary steering. Springtails act as cleanup fauna rather than hunting targets; dwarf isopods, waxworms and darkling beetles add different movement and hiding behavior. Flowers attract flies & moths. Moths love the night.</p>
 <p><b>Jumpers</b> – unlock species with coins and place them. Click a jumper to see what it is thinking. Individuals develop different habits, memories and personalities; species also have stronger identities such as wall-running, canopy hunting, display behavior or tactical ambushing. Age and molt history now affect life stage and movement.</p>
 <p>Jumpers spot prey, plan routes, close distance quickly when prey is far, slow into a careful creep near striking range, freeze when watched from farther away, and commit to a pounce if prey gets too close. Jump reach varies by jumper. Other jumpers can notice, threaten, flee, or become prey themselves; larger and more mature jumpers dominate cannibalistic encounters.</p>
 <p><b>Cameras</b> – keys <b>1</b> isometric, <b>2</b> Observer, <b>3</b> Follow, <b>4</b> Reverse. <b>Observation Mode</b> (📹 or O) hides the management UI and follows interesting behavior automatically. <b>Zoom</b> with the mouse wheel, pinch, or the +/− buttons; drag to pan when zoomed in. In portrait on phones, every enclosure switches to a taller portrait habitat layout. The thumb dock keeps <b>Build, Food, Jumpers, Observe</b> and <b>More</b> within reach; Build/Food open touch-friendly bottom sheets while More contains cameras and maintenance controls. <b>Mist</b> makes droplets they drink. Progress saves automatically.</p>
@@ -50,10 +50,10 @@
  <label class="sl"><input type="checkbox" id="fxTilt" checked> Tilt-shift / depth of field</label>
  <label class="sl"><input type="checkbox" id="fxBloom" checked> Bloom &amp; light shafts</label>
  <label class="sl"><input type="checkbox" id="fxGrain" checked> Film grain &amp; vignette</label>
- <p style="font-size:12px;color:#6a4a2a">Changing render quality reloads the game (progress is saved).</p>
+ <p style="font-size:12px;color:#6a4a2a">Changing render quality reloads the game (progress is saved). Portrait mobile now automatically uses at least Medium quality, and Portrait HD uses High when available for a sharper view.</p>
  <button onclick="closeModal('setModal')">Done</button></div></div>
 <div id="title"><canvas id="titleCv" width="512" height="384"></canvas><h1>JUMPER TERRARIUM</h1>
-<p>A cozy HD-2D terrarium for jumping spiders. Build habitats, release live food, and watch your tiny hunters stalk, calculate and pounce.</p>
+<p>A cozy HD-2D terrarium for jumping spiders. Build habitats, release live food, and watch your tiny hunters stalk, calculate and pounce. Portrait mode now uses a sharper HD render by default.</p>
 <button id="startBtn" style="font-size:20px;padding:10px 28px">▶ Start</button><small style="color:#a88c66">Headphones recommended 🎧</small></div>
 <script src="js/core.js"></script>
 <script src="js/species.js"></script>
@@ -82,5 +82,6 @@
 <script src="js/observation-v20.js"></script>
 <script src="js/mobile-v20.js"></script>
 <script src="js/portrait-v22.js"></script>
+<script src="js/open-habitat-v28.js"></script>
 <script src="js/boot.js"></script>
 </body></html>

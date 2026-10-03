@@ -45,7 +45,7 @@ function updSpider(t,s,dt){const sz=spSize(s);s.anim+=dt;s.st+=dt;const prev=vc(
  const walk=16+sz*0.9,night=isNight();const idle=['wander','look','rest','watch'].includes(s.state);
  if(idle&&night){if(!s.retreat)pickRetreat(t,s);s.route=route(t,s,s.retreat.surf,s.retreat.pt);setSt(s,'toRetreat','Heading to its silk retreat for the night');}
  if(idle&&!night&&s.meals>=3+s.stage&&s.stage<6&&s.sat>55){if(!s.retreat)pickRetreat(t,s);s.route=route(t,s,s.retreat.surf,s.retreat.pt);setSt(s,'toMolt','Feeling tight... preparing to molt');}
- if(idle&&!night&&t.drops.length&&s.thirst>0.45&&s.state!=='watch'){let b=null,bd=1e9;for(const d of t.drops){if(d.surf.t==='perch')continue;const dd=vdist(d.pos,s.pos);if(dd<bd){bd=dd;b=d;}}if(b){s.route=route(t,s,b.surf,b.pos);s.dropT=b;setSt(s,'toDrink','Thirsty - heading for a water droplet');}}
+ if(idle&&!night&&t.drops.length&&s.thirst>0.45&&s.state!=='watch'){let b=null,bd=1e9;for(const d of t.drops){const dd=vdist(d.pos,s.pos);if(dd<bd){bd=dd;b=d;}}if(b){s.route=route(t,s,b.surf,b.pos);s.dropT=b;setSt(s,'toDrink','Thirsty - heading for a water droplet');}}
  if(idle&&!night&&s.sat<82&&s.state!=='watch'){s.scanT-=dt;if(s.scanT<=0){s.scanT=0.25;const p=scanPrey(t,s);if(p){s.hunt={prey:p};s.route=null;setSt(s,'notice',`Spotted a ${PREY[p.type].one}!`);}}}
  if(idle&&G.cur===t.id&&G.mouseScr&&s.state!=='watch'&&!s.jump&&s.surf.t!=='climb'){const sp=Pv(s.pos);if(Math.hypot(sp[0]-G.mouseScr[0],sp[1]-G.mouseScr[1])<45*(cam.k/RS/2)*RS+20*RS){s.route=null;setSt(s,'watch','Watching you curiously 👀');}}
  if(s.jump&&s.state!=='pounce'){if(stepJump(s,dt)){s.surf=s.jump.surfTo;s.pos=vc(s.jump.to);s.jump=null;if(s.route&&s.route.length)s.route.shift();clampSurf(t,s);addFx(t,'dust',s.pos);}}

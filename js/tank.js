@@ -89,19 +89,25 @@ const pounceCommitRange=s=>jumpRange(s)*(0.54+clamp((s.tr&&s.tr.jump)||0.5,0.1,1
 function stalkingSpeed(s,p,walk,d){
  const P_=targetProfile(p),R=jumpRange(s),z=spSize(s);
  const rel=clamp((p.spd||0)/Math.max(1,P_.walk||8),0,2),motion=1-Math.exp(-rel*1.05),rear=preyRearFactor(p,s);
- // v21: keep the approach brisk until the final pre-pounce setup. The slowdown
- // now lives in a narrow band immediately outside crouch range instead of
- // bleeding speed away through the whole middle of the stalk.
- const slowStart=R*1.38, slowEnd=R*1.03;
+ // v27: hunger now changes how aggressively a jumper closes distance.
+ // A full jumper remains measured; a starving jumper can push well above its
+ // normal stalking pace. The bonus disappears in the final setup zone so every
+ // jumper still slows immediately before crouching/launching.
+ const hunger=clamp(1-(s.sat??65)/100,0,1);
+ // Keep almost the entire approach fast. The careful creep only begins in the
+ // narrow final band immediately outside pounce/crouch range.
+ const slowStart=R*1.24, slowEnd=R*1.03;
  const q=clamp((d-slowEnd)/Math.max(1,slowStart-slowEnd),0,1),ease=q*q*(3-2*q);
  const careful=Math.max(2.0+z*.10,walk*(.22+.06*s.tr.patience));
- const approach=walk*(.70+.16*motion);
+ const hungerDrive=1+hunger*.34;
+ const approach=walk*(.70+.16*motion)*hungerDrive;
  let v=lerp(careful,approach,ease);
  v*=1.10-s.tr.stealth*.18;
- // Rear approaches stay confidently faster until the same final setup band,
- // then the bonus softens so the spider still settles before launching.
+ // Rear confidence and hunger both belong to the approach phase. Both fade as
+ // the jumper enters the last pre-pounce creep, preventing a hungry rush from
+ // blowing through the launch setup.
  v*=1+rear*(.18+.30*ease);
- const cap=walk*(.90+.08*rear);
+ const cap=walk*(.90+.08*rear+.24*hunger*ease);
  return Math.min(cap,Math.max(1.8,v));
 }
 const eyePos=s=>v3(s.pos.x,s.pos.y+spSize(s)*0.3,s.pos.z);

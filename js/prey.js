@@ -11,7 +11,27 @@ const PREY={
  isopod:{one:'dwarf isopod',name:'Dwarf Isopods',pack:4,price:8,size:6.8,food:7,value:3,walk:6.5,sense:23,sens:.5,reflex:.16,hide:true,cleanup:true,moisture:true,strong:true,struggle:1.6},
  waxworm:{one:'waxworm',name:'Waxworms',pack:2,price:8,size:14,food:24,value:8,walk:3.8,sense:15,sens:.4,reflex:.05,burrow:true,struggle:2.5},
  beetle:{one:'darkling beetle',name:'Darkling Beetles',pack:2,price:9,size:7.2,food:11,value:5,walk:9.5,sense:31,sens:.65,reflex:.28,hide:true,strong:true,struggle:2.3},
+
 };
+// v25 feeder/ecology expansion. renderAs reuses a proven procedural body while
+// retaining independent behavior, size, value and locomotion capability.
+Object.assign(PREY,{
+ fungusgnat:{one:'fungus gnat',name:'Fungus Gnats',pack:6,price:6,size:2.2,food:4,value:2,walk:8,fly:40,sense:24,sens:.55,reflex:.34,flyer:true,wall:false,decorClimb:false,struggle:.7,renderAs:'fruitfly'},
+ pinhead:{one:'pinhead cricket',name:'Pinhead Crickets',pack:4,price:8,size:6.2,food:11,value:5,walk:16,hop:88,sense:31,sens:.62,reflex:.3,decorClimb:false,struggle:1.8,renderAs:'cricket'},
+ beanbeetle:{one:'bean beetle',name:'Bean Beetles',pack:3,price:9,size:5.4,food:10,value:6,walk:11,fly:48,sense:29,sens:.55,reflex:.32,flyer:true,decorClimb:true,strong:false,struggle:1.7,renderAs:'roach'},
+ silkworm:{one:'silkworm',name:'Silkworms',pack:2,price:9,size:15,food:25,value:9,walk:3.2,sense:13,sens:.3,reflex:.02,decorClimb:false,struggle:2.4,renderAs:'mealworm'},
+ lacewing:{one:'lacewing',name:'Lacewings',pack:2,price:9,size:7.5,food:13,value:8,walk:6,fly:58,sense:34,sens:.65,reflex:.38,flyer:true,decorClimb:false,struggle:1.9,renderAs:'housefly'},
+ locust:{one:'small locust',name:'Small Locusts',pack:2,price:10,size:10.5,food:21,value:10,walk:19,hop:115,sense:38,sens:.72,reflex:.38,decorClimb:false,strong:true,struggle:3,renderAs:'cricket'}
+});
+// Explicit surface capabilities: wall/glass ability no longer implies that an
+// animal may attach to arbitrary decor. Flying insects can land on perches but
+// cannot crawl vertically unless decorClimb is true.
+Object.assign(PREY.fruitfly,{decorClimb:false});Object.assign(PREY.housefly,{decorClimb:false});Object.assign(PREY.bluebottle,{decorClimb:false});Object.assign(PREY.moth,{decorClimb:false});
+Object.assign(PREY.cricket,{decorClimb:false});Object.assign(PREY.mealworm,{decorClimb:false});Object.assign(PREY.roach,{decorClimb:true});
+Object.assign(PREY.springtail,{decorClimb:false});Object.assign(PREY.isopod,{decorClimb:false});Object.assign(PREY.waxworm,{decorClimb:false});Object.assign(PREY.beetle,{decorClimb:true});
+// Tiny live-food jumpers remain alert, but v25 deliberately lowers their
+// detection/reflex so they are no longer nearly impossible to stalk.
+Object.assign(PREY.sjumper,{sense:44,sens:.66,reflex:.34,decorClimb:true});
 function newPrey(type,t,pos){const P_=PREY[type];const p={kind:'prey',id:UID++,type,pos:pos?vc(pos):randFloorPt(t),surf:S_FLOOR,face:vnorm(v3(rr(-1,1),0,rr(-1,1))),state:'idle',st:0,route:null,jump:null,alert:0,vel:v3(),anim:rand()*10,moved:0,spd:0,dead:false,feed:0,owner:null,buried:false,seed:(rand()*1e9)|0,fl:null,size:P_.size*rr(0.85,1.15)};
  if(pos&&pos.y>0){p.surf={t:'air'};p.vel=v3(0,-20,0);p.state=P_.flyer?'fly':'drop';if(P_.flyer)p.fl=flyTarget(t,p,null);}
  return p;}

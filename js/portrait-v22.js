@@ -24,7 +24,8 @@ const PORTRAIT22={
  cube:{w:120,d:98,h:176,label:'Portrait Large'},
  acrylic:{w:92,d:66,h:146,label:'Portrait Breeder'},
  panoramic:{w:146,d:88,h:184,label:'Portrait Showcase'},
- jar:{w:106,d:106,h:190,label:'Tall Portrait Jar'}
+ jar:{w:106,d:106,h:190,label:'Tall Portrait Jar'},
+ open:{w:130,d:96,h:214,label:'Portrait Open Display'}
 };
 const mq22=matchMedia('(max-width:700px) and (orientation: portrait)');
 
@@ -136,6 +137,6 @@ ensureUI22();
 JT22.portrait=portraitWanted22();document.body.classList.toggle('portrait22',JT22.portrait);attachDrawer22();
 // habitats.js performs initial load before this module is evaluated, so remap that already-loaded world now.
 if(typeof G!=='undefined'&&G.tanks?.length)syncGeometry22(true);
-window.__JT22=JT22;
+window.__JT22=Object.assign(JT22,{remapTank:remapTank22,syncGeometry:syncGeometry22,portraitWanted:portraitWanted22});
 })();
 // ================= end v22 portrait-first mobile revamp =================
