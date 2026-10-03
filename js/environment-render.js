@@ -337,7 +337,7 @@ function drawRetreat(r,c){const w=r.surf&&r.surf.w;if(!w)return;const sd=r._sd||
   const p1=P(...W3(Math.cos(a2)*L*1.2,Math.sin(a2)*L*0.8+(i%3===0?TH:0)),c);plineB(p0[0],p0[1],p1[0],p1[1],0xffffffff,0.22*r.silk+0.05);}}
 function drawHeldPrey(t,p,c,x,y,view,dir,ang,gy){const s=p.owner;if(!s)return;const struggle=s.hunt&&s.state==='subdue'?clamp(s.hunt.subT/PREY[p.type].struggle,0,1):0;
  const o={tw:struggle>0?s.anim*(0.5+struggle):0,dark:s.state==='subdue'?(1-struggle)*0.5:0.5+p.feed*0.4,shrink:1-p.feed*0.3};const u=c.k*PSf(c);const sz=p.size*u*o.shrink;const jit=struggle>0?Math.sin(s.anim*45)*struggle*1.2:0;
- if(view==='top'||view==='belly'){drawPrey(p,x+Math.cos(ang)*sz*0.36+jit,y+Math.sin(ang)*sz*0.36,u,'top',false,ang+Math.PI,o);return;}
+ if(view==='top'||view==='belly'){drawPrey(p,x+Math.cos(ang)*sz*0.36+jit,y+Math.sin(ang)*sz*0.36,u,view,false,ang+Math.PI,o);return;}
  const X=x+dir*sz*0.36+jit,Y=Math.min(y+sz*0.42,gy+u*0.4);drawPrey(p,X,Y,u,'side',dir>0,0,o);}
 // lamp-cast soft shadows (world-space map on the floor)
 function segBox(px,py,pz,L,a,b){let t0=0,t1=1;const p=[px,py,pz];for(let i=0;i<3;i++){const d=L[i]-p[i];if(Math.abs(d)<1e-9){if(p[i]<a[i]||p[i]>b[i])return false;continue;}let u=(a[i]-p[i])/d,v=(b[i]-p[i])/d;if(u>v){const q=u;u=v;v=q;}if(u>t0)t0=u;if(v<t1)t1=v;if(t0>t1)return false;}return true;}
@@ -382,7 +382,7 @@ function drawPreyEnt(t,p,c){if(p.buried){const q=Pv(p.pos,c);pset(q[0],q[1],shd(
  const v=viewFor(p,c);const PS=PSf(c);let dp=dispPos(p,p.size*0.55*PS,c);if(p.surf&&p.surf.t==='plat'&&!p.owner){const d=platById(t,p.surf.id);if(d)dp.y=platTopY(d,dp.x,dp.z);}if(p.owner&&p.owner._dp)dp=vadd(dp,vsub(p.owner._dp,p.owner.pos));const q=Pv(dp,c);if(!p.owner&&p.surf.t!=='wall')drawShadow(t,p,p.size*0.35*PS,c,dp);
  const o={};if(p.owner){const s=p.owner;const struggle=s.hunt&&s.state==='subdue'?clamp(s.hunt.subT/PREY[p.type].struggle,0,1):0;o.tw=struggle>0?s.anim*(0.5+struggle):0;o.dark=s.state==='subdue'?(1-struggle)*0.5:0.5+p.feed*0.4;o.shrink=1-p.feed*0.3;
   if(struggle>0){q[0]+=Math.sin(s.anim*45)*struggle*1.2;}}
- drawPrey(p,q[0],q[1],c.k*PS,(v.view==='top'||v.view==='belly')?'top':'side',v.flip??(v.view==='back'),v.ang||0,o);}
+ drawPrey(p,q[0],q[1],c.k*PS,(v.view==='belly'?'belly':v.view==='top'?'top':'side'),v.flip??(v.view==='back'),v.ang||0,o);}
 function drawHusk(t,h,c){const q=Pv(dispPos({pos:h.pos,surf:h.surf||S_FLOOR},h.size*0.6,c),c);if(h.type==='exuvia'){const S=SPEC[h.sp];const v=viewFor({surf:h.surf,pos:h.pos,face:h.face},c);drawJumper({x:q[0],y:q[1],u:c.k*h.size/9.5*CSf(c),view:v.view,flip:v.flip,ang:v.ang,pal:paleOf(S.pal),pat:S.pat,seed:h.seed,as:0.8});return;}
  drawPrey({type:h.type,size:h.size,seed:h.seed,anim:0,surf:S_FLOOR,spd:0},q[0],q[1],c.k*PSf(c),'side',false,0,{husk:true,shrink:0.75});}
 let DL=[],DLX=null;const EBX={};let EBN={};
@@ -432,7 +432,7 @@ function drawScene(t,c){const key=camKey(c);const T0=performance.now();EBN={};
  DLX=g=>{g.lineWidth=Math.max(0.7,0.5*RS);for(const s of t.spiders){if(s.drag){const a=Pv(s.drag.a,c),b=Pv(s._dp||s.pos,c);g.strokeStyle='rgba(255,255,255,.55)';g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]-spSize(s)*c.k*0.25);g.stroke();}}
   for(const f of t.fx){const q=Pv(f.pos,c);if(f.type==='bite'&&f.t<0.8){const r=(2+f.t*14)*c.k*0.6;g.strokeStyle=`rgba(255,255,255,${0.8-f.t})`;g.setLineDash([RS*1.2,RS*2.2]);g.beginPath();g.ellipse(q[0],q[1],r,r*0.7,0,0,6.283);g.stroke();g.setLineDash([]);}
    if(f.type==='dust'&&f.t<0.5){g.fillStyle=SUBS[t.sub].c[2];g.globalAlpha=0.6-f.t;for(let i=0;i<6;i++){const a=i/6*6.283;g.fillRect(q[0]+Math.cos(a)*f.t*20*c.k*0.4,q[1]+Math.sin(a)*f.t*6*c.k*0.4-f.t*4,RS,RS);}g.globalAlpha=1;}}
-  if(UI.place&&G.mouse){const m=G.mouse;const pl=UI.place;let w=10,d=10;if(pl.kind==='decor'){const D=DECOR[pl.id];w=D.w;d=D.d;if(UI.rot&&D.kind==='plat')[w,d]=[d,w];}
+  if(UI.place&&G.mouse){const m=G.mouse;const pl=UI.place;let w=10,d=10;if(pl.kind==='decor'){const D=DECOR[pl.id];w=D.w;d=D.d;if(UI.rot)[w,d]=[d,w];}
    const ok=placeOK(t,pl,m.x,m.z);const pts=[[m.x-w/2,m.z-d/2],[m.x+w/2,m.z-d/2],[m.x+w/2,m.z+d/2],[m.x-w/2,m.z+d/2]].map(q=>P(q[0],0,q[1],c));
    g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=ok?'rgba(138,224,127,.18)':'rgba(255,90,90,.18)';g.fill();g.strokeStyle=ok?'rgba(138,224,127,.9)':'rgba(255,90,90,.9)';g.lineWidth=Math.max(1,RS);g.stroke();}};
  if(!FGC[key]){FGC[key]=buildFG(c);FGC[key].cv=pbCanvas(FGC[key].pb);FGC[key].pb=null;}}

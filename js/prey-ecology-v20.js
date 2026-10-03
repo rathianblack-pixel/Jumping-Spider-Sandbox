@@ -25,6 +25,6 @@ drawPrey=function(p,X,Y,u,view,flip,ang,o={}){if(!['springtail','isopod','waxwor
 };
 // Cleanup crews gradually break down old feeder remains, but never exuviae or spider remains.
 const _updTankEco20=updTank;
-updTank=function(t,dt){const r=_updTankEco20(t,dt);if(!t||t.owned===false)return r;t._huskAge20=t._huskAge20||new Map();for(const h of t.husks||[])t._huskAge20.set(h,(t._huskAge20.get(h)||0)+dt);const cleaners=(t.prey||[]).filter(p=>!p.owner&&(p.type==='springtail'||p.type==='isopod')).length;if(cleaners&&rand()<dt*cleaners*.004){for(let i=0;i<t.husks.length;i++){const h=t.husks[i];if(h.type==='exuvia'||h.type==='spiderMeal')continue;if((t._huskAge20.get(h)||0)>DAYLEN*.08){t.husks.splice(i,1);t._huskAge20.delete(h);break;}}}return r;};
+updTank=function(t,dt){const r=_updTankEco20(t,dt);if(!t||t.owned===false)return r;t._huskAge20=t._huskAge20||new Map();for(const h of t.husks||[])t._huskAge20.set(h,(t._huskAge20.get(h)||0)+dt);const cleaners=(t.prey||[]).filter(p=>!p.owner&&(p.type==='springtail'||p.type==='isopod')).length;if(false&&cleaners&&rand()<dt*cleaners*.004){for(let i=0;i<t.husks.length;i++){const h=t.husks[i];if(h.type==='exuvia'||h.type==='spiderMeal')continue;if((t._huskAge20.get(h)||0)>DAYLEN*.08){t.husks.splice(i,1);t._huskAge20.delete(h);break;}}}return r;};
 window.__JT20_PREY={ensurePreyEco20};
 // ================= end v20 prey ecology =================

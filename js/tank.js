@@ -17,8 +17,8 @@ function platById(t,id){return t.decor.find(d=>d.id===id);}
 function groundAt(t,x,z){let h=0,p=null;for(const d of t.decor){if(DECOR[d.type].kind!=='plat')continue;if(x>=d.x0&&x<=d.x1&&z>=d.z0&&z<=d.z1&&d.h>h){h=d.h;p=d;}}return {h,p};}
 function inCover(t,x,z,y=0){for(const d of t.decor){const D=DECOR[d.type];if(!D.cover)continue;if(y>(D.ph||D.h||4)+2&&D.kind!=='flat')continue;if(D.kind==='flat'&&y>2)continue;const dx=(x-d.x)/(d.w/2),dz=(z-d.z)/(d.d/2);if(dx*dx+dz*dz<1)return true;}return false;}
 const S_FLOOR={t:'floor'};
-const sameSurf=(a,b)=>a&&b&&a.t===b.t&&(a.t!=='plat'||a.id===b.id)&&(a.t!=='wall'||a.w===b.w);
-const elevated=s=>s.t==='plat'||s.t==='wall';
+const sameSurf=(a,b)=>{if(!a||!b||a.t!==b.t)return false;if(a.t==='plat'||a.t==='perch'||a.t==='climb')return a.id===b.id;if(a.t==='wall')return a.w===b.w;return true;};
+const elevated=s=>s&&(s.t==='plat'||s.t==='wall'||s.t==='perch'||s.t==='climb');
 function wallClamp(w,p){const q=vc(p);q.y=clamp(q.y,0,TH-4);if(w==='z0'||w==='zD'){q.z=w==='z0'?0.3:TD-0.3;q.x=clamp(q.x,1,TW-1);}else{q.x=w==='x0'?0.3:TW-0.3;q.z=clamp(q.z,1,TD-1);}return q;}
 function wallNormal(w){return w==='z0'?v3(0,0,1):w==='zD'?v3(0,0,-1):w==='x0'?v3(1,0,0):v3(-1,0,0);}
 function wallBase(w,p){const q=wallClamp(w,p);q.y=0;const n=wallNormal(w);return v3(q.x+n.x*1.5,0,q.z+n.z*1.5);}

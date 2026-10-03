@@ -92,7 +92,7 @@ function drawJumper(o){const pal=o.pal,u=o.u,X=o.x,Y=o.y;const L=col(pal.leg),LB
 const PREYCOL={fruitfly:{b:'#c79a5a',a:'#5a3a1a',e:'#d0261a'},housefly:{b:'#4b4b4b',a:'#2e2e2e',e:'#7a1f14'},bluebottle:{b:'#2b3240',a:'#2d58c8',e:'#a3281c'},moth:{b:'#b8a487',a:'#8a7658',e:'#2a2018'},cricket:{b:'#7a5530',a:'#5a3c20',e:'#1a120a'},mealworm:{b:'#d9a54a',a:'#a8742e',e:'#4a2e14'},roach:{b:'#4a3022',a:'#2e1c12',e:'#1a100a'}};
 const SJPAL={body:'#6a625a',body2:'#3a342e',abd:'#7a7268',abd2:'#3e3832',abd3:'#c9c0b2',fuzz:'#d0c8bc',leg:'#5a524a',band:'#a49a8e',chel:'#3a342e',chelHi:'#6a625a',face:'#7a7268'};
 function drawPrey(p,X,Y,u,view,flip,ang,o={}){const rt=PREY[p.type]?.renderAs;if(rt)p=Object.assign({},p,{type:rt});const C=PREYCOL[p.type]||PREYCOL.roach;if(p.type==='sjumper'){drawJumper({x:X,y:Y,u:u*p.size/12*1.0,view,flip,ang,pal:o.husk?HUSKPAL:SJPAL,pat:'stripes',seed:p.seed,phase:p.anim*12*(p.spd>1?1:0)+(o.tw||0),as:1});return;}
- let B_=col(C.b),A_=col(C.a),E_=col(C.e);if(o.dark){B_=mixc(B_,0xff2a2018,o.dark);A_=mixc(A_,0xff2a2018,o.dark);}if(o.husk){B_=mixc(B_,0xff8a7a62,0.6);A_=mixc(A_,0xff6a5a46,0.6);}
+ const belly=view==='belly';if(belly)view='top';let B_=col(C.b),A_=col(C.a),E_=col(C.e);if(belly&&!o.husk){B_=mixc(B_,col('#b89a76'),.36);A_=mixc(A_,col('#d0b893'),.28);}if(o.dark){B_=mixc(B_,0xff2a2018,o.dark);A_=mixc(A_,0xff2a2018,o.dark);}if(o.husk){B_=mixc(B_,0xff8a7a62,0.6);A_=mixc(A_,0xff6a5a46,0.6);}
  const s=p.size*u*(o.shrink||1);const fl=flip?-1:1;const tw=o.tw||0;
  const flying=p.surf&&p.surf.t==='air'&&!p.owner;
  if(p.type==='fruitfly'||p.type==='housefly'||p.type==='bluebottle'){

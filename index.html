@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<title>Jumper Terrarium v28</title>
+<title>Jumper Terrarium v31</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/mobile-v20.css">
   <link rel="stylesheet" href="css/portrait-v22.css">
@@ -31,20 +31,23 @@
  <label class="sl">Music <input type="range" id="vMusic" min="0" max="100" value="55"></label>
  <label class="sl">Ambience <input type="range" id="vAmb" min="0" max="100" value="60"></label>
  <label class="sl">Effects <input type="range" id="vSfx" min="0" max="100" value="70"></label>
- <label class="sl"><input type="checkbox" id="rainChk" checked> Rain on the window</label>
- <label class="sl"><input type="checkbox" id="roomChk" checked> Room tone & nature</label>
+ <label class="sl" style="display:none"><input type="checkbox" id="rainChk"> Rain disabled</label>
+ <label class="sl"><input type="checkbox" id="roomChk" checked> Subtle critter ambience</label>
  <button onclick="closeModal('sndModal')">Done</button></div></div>
 <div class="modal" id="helpModal"><div class="panel" style="max-width:620px;line-height:1.5"><h2>How to play</h2>
 <p><b>Habitats</b> – every enclosure type is now an <b>open nature display</b>. Standard, Arboreal, Wide, Nano, Cube, Acrylic, Panoramic and Jar keep their own dimensions, capacities, decor catalogs and presets, but there is no visible or climbable glass. Invisible containment keeps animals inside; walking and climbing happen only on substrate, plants, branches, rocks and other real decor surfaces. Use the Tank tab at the top to switch enclosures; choose Manage Habitats there to buy, rename or replace enclosures.</p>
-<p><b>Decor / Plants / Substrate / Presets</b> – each enclosure has its own compatible decor catalog and adaptive layout presets. Pick an item and click inside the tank to place it. <b>R</b> rotates. <b>Esc</b> cancels. Save your own layouts from Presets and reuse them in compatible habitats. <b>Remove</b> can remove decor, prey, jumpers, remains, droplets or silk; decor refunds 50%.</p>
+<p><b>Decor / Plants / Substrate / Presets</b> – each enclosure has its own compatible decor catalog and adaptive layout presets. Pick an item and click inside the tank to place it. Decor and plant cards now use the same renderer as the habitat. <b>R</b> rotates every decor/plant footprint and its real rendered geometry by 90°. <b>Esc</b> cancels. Save your own layouts from Presets and reuse them in compatible habitats. <b>Remove</b> can remove decor, prey, jumpers, remains, droplets or silk; decor refunds 50%.</p>
 <p><b>Live Food</b> – pick prey and click in the tank to drop it in. Prey now has explicit locomotion capabilities: non-climbers cannot stick to vertical decor, while flyers stay inside every habitat using soft invisible-boundary steering. Springtails act as cleanup fauna rather than hunting targets; dwarf isopods, waxworms and darkling beetles add different movement and hiding behavior. Flowers attract flies & moths. Moths love the night.</p>
 <p><b>Jumpers</b> – unlock species with coins and place them. Click a jumper to see what it is thinking. Individuals develop different habits, memories and personalities; species also have stronger identities such as wall-running, canopy hunting, display behavior or tactical ambushing. Age and molt history now affect life stage and movement.</p>
-<p>Jumpers spot prey, plan routes, close distance quickly when prey is far, slow into a careful creep near striking range, freeze when watched from farther away, and commit to a pounce if prey gets too close. Jump reach varies by jumper. Other jumpers can notice, threaten, flee, or become prey themselves; larger and more mature jumpers dominate cannibalistic encounters.</p>
-<p><b>Cameras</b> – keys <b>1</b> isometric, <b>2</b> Observer, <b>3</b> Follow, <b>4</b> Reverse. <b>Observation Mode</b> (📹 or O) hides the management UI and follows interesting behavior automatically. <b>Zoom</b> with the mouse wheel, pinch, or the +/− buttons; drag to pan when zoomed in. In portrait on phones, every enclosure switches to a taller portrait habitat layout. The thumb dock keeps <b>Build, Food, Jumpers, Observe</b> and <b>More</b> within reach; Build/Food open touch-friendly bottom sheets while More contains cameras and maintenance controls. <b>Mist</b> makes droplets they drink. Progress saves automatically.</p>
+<p>Jumpers now use physical decor surfaces as real 3D terrain: they can climb visible sides, jump between branches/plants/rocks, descend strategically instead of pacing, use height for longer downward pounces, and commit to prey targets instead of constantly switching. Pre-molt overrides hunting: a ready jumper immediately seeks a high, sheltered retreat. Other jumpers can notice, threaten, flee, or become prey themselves; larger and more mature jumpers dominate cannibalistic encounters.</p>
+<p><b>Creative stacking</b> – appropriately sized decor and plants can be placed on top of larger solid decor. The child object inherits a real elevated support height, so animals can use the resulting setup as connected habitat terrain.</p>
+<p><b>Backgrounds & ambience</b> – choose a natural scene in Settings for each habitat. Rain audio is removed; ambience now comes from subtle critter chirps, wing sounds and substrate movement.</p>
+<p><b>Cameras</b> – landscape Iso/Observer/Reverse now frame the habitat closer. Keys <b>1</b> isometric, <b>2</b> Observer, <b>3</b> Follow, <b>4</b> Reverse. <b>Observation Mode</b> (📹 or O) hides the management UI and follows interesting behavior automatically. <b>Zoom</b> with the mouse wheel, pinch, or the +/− buttons; drag to pan when zoomed in. In portrait on phones, every enclosure switches to a taller portrait habitat layout. The thumb dock keeps <b>Build, Food, Jumpers, Observe</b> and <b>More</b> within reach; Build/Food open touch-friendly bottom sheets while More contains cameras and maintenance controls. <b>Mist</b> makes droplets they drink. Progress saves automatically.</p>
 <button onclick="closeModal('helpModal')">Got it</button></div></div>
 
 <div class="modal" id="journalModal"><div class="panel" style="max-width:720px"><div style="display:flex;justify-content:space-between;align-items:center"><h2>📓 Field Journal</h2><button onclick="closeModal('journalModal')">Close</button></div><p style="margin-top:0;color:#6a4a2a">Behaviors are recorded when you actually witness them. Individual jumper traits reveal themselves gradually through observation.</p><div id="journalBody"></div></div></div>
 <div class="modal" id="setModal"><div class="panel" style="max-width:460px"><h2>⚙ Settings</h2>
+ <label class="sl">Background <select id="bgSel"></select></label>
  <label class="sl">Render quality <select id="qSel"><option value="1">Low (fast)</option><option value="2">Medium</option><option value="3">High (sharpest)</option></select></label>
  <label class="sl"><input type="checkbox" id="fxPost" checked> HD-2D post-processing</label>
  <label class="sl"><input type="checkbox" id="fxTilt" checked> Tilt-shift / depth of field</label>
@@ -83,5 +86,14 @@
 <script src="js/mobile-v20.js"></script>
 <script src="js/portrait-v22.js"></script>
 <script src="js/open-habitat-v28.js"></script>
+<script src="js/decor-preview-v29.js"></script>
+<script src="js/smart-hunting-v30.js"></script>
+<script src="js/physical-ai-v31.js"></script>
+<script src="js/behavior-fix-v32.js"></script>
+<script src="js/behavior-fix-v33.js"></script>
+<script src="js/behavior-fix-v34.js"></script>
+<script src="js/behavior-fix-v35.js"></script>
+<script src="js/behavior-fix-v36.js"></script>
+<script src="js/presentation-v31.js"></script>
 <script src="js/boot.js"></script>
 </body></html>

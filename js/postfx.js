@@ -95,7 +95,8 @@ function compose(t,c,now){const s=ctx;s.setTransform(1,0,0,1,0,0);s.globalCompos
  const fg=FGC[camKey(c)];s.drawImage(fg.cv,Math.round(c.ox+fg.offX),Math.round(c.oy+fg.offY));
  glassFx(s,c);lamp(s,c,lightLevel());}
 // ---------- WebGL post-processing ----------
-const PFX=Object.assign({post:true,tilt:true,bloom:true,grain:true},JSON.parse(localStorage.getItem('jtFX')||'{}'));
+let _pfxSaved8={};try{_pfxSaved8=JSON.parse(localStorage.getItem('jtFX')||'{}')||{};}catch(_){}
+const PFX=Object.assign({post:true,tilt:true,bloom:true,grain:true},_pfxSaved8);
 let GLP=null,cv2d=null;
 const POST8={lost:false,noGL:false,errs:0,fb:null,fx:null};
 function syncFallback8(){const f=POST8.fb;if(!f)return;if(f.width!==W)f.width=W;if(f.height!==H)f.height=H;if(f.style.width!==cv.style.width)f.style.width=cv.style.width;if(f.style.height!==cv.style.height)f.style.height=cv.style.height;const l=cv.offsetLeft+'px',t=cv.offsetTop+'px';if(f.style.left!==l)f.style.left=l;if(f.style.top!==t)f.style.top=t;}
